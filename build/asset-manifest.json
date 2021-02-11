@@ -1,26 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.9e094b96.chunk.css",
-    "main.js": "/static/js/main.3b2153cd.chunk.js",
-    "main.js.map": "/static/js/main.3b2153cd.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.d6923e70.js",
-    "runtime-main.js.map": "/static/js/runtime-main.d6923e70.js.map",
-    "static/css/2.869b641b.chunk.css": "/static/css/2.869b641b.chunk.css",
-    "static/js/2.f7c867aa.chunk.js": "/static/js/2.f7c867aa.chunk.js",
-    "static/js/2.f7c867aa.chunk.js.map": "/static/js/2.f7c867aa.chunk.js.map",
-    "static/js/3.5aee8a8a.chunk.js": "/static/js/3.5aee8a8a.chunk.js",
-    "static/js/3.5aee8a8a.chunk.js.map": "/static/js/3.5aee8a8a.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.869b641b.chunk.css.map": "/static/css/2.869b641b.chunk.css.map",
-    "static/css/main.9e094b96.chunk.css.map": "/static/css/main.9e094b96.chunk.css.map",
-    "static/js/2.f7c867aa.chunk.js.LICENSE.txt": "/static/js/2.f7c867aa.chunk.js.LICENSE.txt",
-    "static/media/semantic.min.css": "/static/media/outline-icons.ddae9b1b.woff"
+    "main.css": "/material-dashboard-react/static/css/main.e8afc1de.chunk.css",
+    "main.js": "/material-dashboard-react/static/js/main.5677ee9b.chunk.js",
+    "main.js.map": "/material-dashboard-react/static/js/main.5677ee9b.chunk.js.map",
+    "runtime-main.js": "/material-dashboard-react/static/js/runtime-main.d0bf2bb1.js",
+    "runtime-main.js.map": "/material-dashboard-react/static/js/runtime-main.d0bf2bb1.js.map",
+    "static/css/2.c00ef52c.chunk.css": "/material-dashboard-react/static/css/2.c00ef52c.chunk.css",
+    "static/js/2.6bebda0a.chunk.js": "/material-dashboard-react/static/js/2.6bebda0a.chunk.js",
+    "static/js/2.6bebda0a.chunk.js.map": "/material-dashboard-react/static/js/2.6bebda0a.chunk.js.map",
+    "index.html": "/material-dashboard-react/index.html",
+    "precache-manifest.cae78963d375d8eec556906cae6d0e4f.js": "/material-dashboard-react/precache-manifest.cae78963d375d8eec556906cae6d0e4f.js",
+    "service-worker.js": "/material-dashboard-react/service-worker.js",
+    "static/css/2.c00ef52c.chunk.css.map": "/material-dashboard-react/static/css/2.c00ef52c.chunk.css.map",
+    "static/css/main.e8afc1de.chunk.css.map": "/material-dashboard-react/static/css/main.e8afc1de.chunk.css.map",
+    "static/js/2.6bebda0a.chunk.js.LICENSE.txt": "/material-dashboard-react/static/js/2.6bebda0a.chunk.js.LICENSE.txt",
+    "static/media/marc.jpg": "/material-dashboard-react/static/media/marc.8880a65c.jpg",
+    "static/media/sidebar-2.jpg": "/material-dashboard-react/static/media/sidebar-2.310509c9.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.d6923e70.js",
-    "static/css/2.869b641b.chunk.css",
-    "static/js/2.f7c867aa.chunk.js",
-    "static/css/main.9e094b96.chunk.css",
-    "static/js/main.3b2153cd.chunk.js"
+    "static/js/runtime-main.d0bf2bb1.js",
+    "static/css/2.c00ef52c.chunk.css",
+    "static/js/2.6bebda0a.chunk.js",
+    "static/css/main.e8afc1de.chunk.css",
+    "static/js/main.5677ee9b.chunk.js"
   ]
 }
