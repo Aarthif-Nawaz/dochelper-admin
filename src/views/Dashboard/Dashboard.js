@@ -1,4 +1,4 @@
-import React ,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 // react plugin for creating charts
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,7 +9,8 @@ import Table from "components/Table/Table.js";
 import TextField from "@material-ui/core/TextField";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import {BASE_URL} from "service";
+import { BASE_URL } from "service";
+
 
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -17,44 +18,45 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-import 'assets/css/material-dashboard-react.css'
-
+import ButtonM from "@material-ui/core/Button";
+import "assets/css/material-dashboard-react.css";
+import Modal from "react-modal";
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
+import './style.css'
 const useStyles = makeStyles(styles);
 
+Modal.setAppElement('#root')
 export default function Dashboard(props) {
+  const [modalIsOpen, setIsOpen] = React.useState(false);
   const history = useHistory();
-  const [name,setName] = useState("")
-  const [desc,setDes] = useState("")
-  const [proj,setProj] = useState([])
-  const [links,setLinks] = useState([])
+  const [name, setName] = useState("");
+  const [desc, setDes] = useState("");
+  const [proj, setProj] = useState([]);
+  const [links, setLinks] = useState([]);
 
   async function getProjects() {
     var database = sessionStorage.getItem("database");
     database = database.split("@");
-    const response = await fetch(BASE_URL+`/projects/${database[0]}`)
+    const response = await fetch(BASE_URL + `/projects/${database[0]}`);
 
     const json = await response.json();
     //console.log(json.result[0].links)
-    if(json.result === "No such Database exists"){
-        setProj([])
+    if (json.result === "No such Database exists") {
+      setProj([]);
+    } else {
+      setLinks(json.result[0].links);
+      setProj(json.result);
     }
-    else{
-      setLinks(json.result[0].links)
-        setProj(json.result);
-    }
-    
   }
 
   useEffect(() => {
     getProjects();
-  },[])
-
+  }, []);
 
   const CreateProject = (e) => {
-    e.preventDefault()
-    var database = sessionStorage.getItem("database")
+    e.preventDefault();
+    var database = sessionStorage.getItem("database");
     database = database.split("@");
 
     const add_project = {
@@ -64,19 +66,19 @@ export default function Dashboard(props) {
     };
 
     axios
-      .post(BASE_URL+"/addProject", add_project)
+      .post(BASE_URL + "/addProject", add_project)
       .then((response) => {
         console.log(response);
         getProjects();
+        setIsOpen(false)
       })
       .catch((e) => {
         console.log(e);
         //setLoading(false);
       });
+  };
 
-  }
-
-  var database = sessionStorage.getItem("database")
+  var database = sessionStorage.getItem("database");
   database = database.split("@");
 
   const classes = useStyles();
@@ -85,62 +87,26 @@ export default function Dashboard(props) {
       <GridContainer>
         <GridItem xs={12}>
           <Card>
-            <CardHeader color="success">
-              <h4 className={classes.cardTitleWhite}>Create Projects</h4>
-            </CardHeader>
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12}>
-                <TextField
-            variant="standard"
-            fullWidth
-            placeholder="Enter Project Name"
-            id="train"
-            label="Project Name"
-            name="train"
-            autoComplete="Enter Project Name"
-            onChange={(e) => setName(e.target.value)}
-          />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12}>
-                <TextField
-            variant="standard"
-            style={{
-              marginTop:"20px"
-            }}
-            fullWidth
-            placeholder="Enter Project Description"
-            id="train"
-            label="Project Description"
-            name="train"
-            autoComplete="Enter Project Description"
-            onChange={(e) => setDes(e.target.value)}
-          />
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button onClick={CreateProject} color="success">Create</Button>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12}>
-          <Card>
             <CardHeader color="info">
               <h4 className={classes.cardTitleWhite}>Projects</h4>
             </CardHeader>
-            <CardBody style={{overflow: 'auto'}}>
+            <CardBody style={{ overflow: "auto" }}>
               <Table
                 tableHeaderColor="info"
                 done={true}
-                tableHead={["Project Name", "Description", "Trained URLs", "Status","View"]}
-                tableData={proj.map((project) => (
-                  [project.project_name,project.description,project.links, "Active"]
-                ))}
+                tableHead={[
+                  "Project Name",
+                  "Description",
+                  "Trained URLs",
+                  "Status",
+                  "View",
+                ]}
+                tableData={proj.map((project) => [
+                  project.project_name,
+                  project.description,
+                  project.links,
+                  "Active",
+                ])}
                 // tableData={[
                 //   ["APIM", "Dakota Rice", "$36,738", "Niger"],
                 //   ["IS", "Minerva Hooper", "$23,789", "Curaçao"],
@@ -154,6 +120,72 @@ export default function Dashboard(props) {
           </Card>
         </GridItem>
       </GridContainer>
+      <ButtonM style={{
+        color: 'white',
+        backgroundColor:'green',
+        marginLeft: '35%',
+        width:250
+      }} onClick={() => setIsOpen(true)} >
+        Create Project
+      </ButtonM>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setIsOpen(false)}
+        contentLabel="Create Project"
+        className={classes.Modal}
+        overlayClassName={classes.Overlay}
+      >
+        <GridContainer>
+          <GridItem xs={12}>
+            <Card>
+              <CardHeader color="success">
+                <h4 className={classes.cardTitleWhite}>Create Projects</h4>
+              </CardHeader>
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12}>
+                    <TextField
+                      variant="standard"
+                      fullWidth
+                      placeholder="Enter Project Name"
+                      id="name"
+                      label="Project Name"
+                      name="train"
+                      autoComplete="Enter Project Name"
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12}>
+                    <TextField
+                      variant="standard"
+                      style={{
+                        marginTop: "20px",
+                      }}
+                      fullWidth
+                      placeholder="Enter Project Description"
+                      id="train"
+                      label="Project Description"
+                      name="train"
+                      autoComplete="Enter Project Description"
+                      onChange={(e) => setDes(e.target.value)}
+                    />
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardFooter>
+                <Button onClick={CreateProject} color="success">
+                  Create
+                </Button>
+                <Button onClick={() => setIsOpen(false)} color="danger">
+                  Close
+                </Button>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </Modal>
     </div>
   );
 }

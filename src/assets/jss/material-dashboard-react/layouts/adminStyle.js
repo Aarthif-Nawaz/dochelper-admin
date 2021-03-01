@@ -35,6 +35,12 @@ const appStyle = theme => ({
     top: "0",
     height: "100vh"
   },
+  Modal : {
+    position: 'absolute',
+    left: '23%',
+    top:'50%',
+    width:1000,
+  },
   mainPanel: {
     [theme.breakpoints.up("md")]: {
       width: `calc(100% - ${drawerWidth}px)`

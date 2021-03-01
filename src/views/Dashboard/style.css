@@ -1,0 +1,10 @@
+.Modal {
+    position: absolute;
+    top: 60%;
+    left: 40%;
+    width:500px;
+}
+.Overlay {
+    position: fixed;
+    
+}

@@ -13,6 +13,12 @@ const dashboardStyle = {
     width: "16px",
     height: "16px"
   },
+  Modal : {
+    position: 'absolute',
+    left: '25%',
+    top:'30%',
+    width:900,
+  },
   stats: {
     color: grayColor[0],
     display: "inline-flex",

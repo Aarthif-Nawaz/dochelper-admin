@@ -108,7 +108,7 @@ const handleSubmit = (e) => {
           "Content-Type": "application/json",
         },
       };
-      axios.post("http://35.184.216.242:5000/user/register", user).then((response) => {
+      axios.post(BASE_URL+"/user/register", user).then((response) => {
           console.log(response);
           if (response.data.result == "User already exists") {
             toast.warn("You are already registered", {
