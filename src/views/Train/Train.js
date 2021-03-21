@@ -8,6 +8,7 @@ import routes from "routes.js";
 import { makeStyles } from "@material-ui/core/styles";
 import ButtonM from "@material-ui/core/Button";
 import Modal from "react-modal";
+import ReactLoading from 'react-loading';
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
@@ -33,11 +34,13 @@ const useStyles = makeStyles(styles);
 
 Modal.setAppElement("#root");
 export default function Train(props) {
+  
   // styles
   const [train, setTrain] = useState("");
   const [product, setName] = useState(sessionStorage.getItem("project"));
   const classes = useStyles();
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [visibile,setVisible] = useState('hidden')
   // ref to help us initialize PerfectScrollbar on windows devices
   // states and functions
   const [image, setImage] = React.useState(bgImage);
@@ -45,15 +48,16 @@ export default function Train(props) {
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
-  const [text, setText] = useState("Pending For Training");
+  const [text, setText] = useState(localStorage.getItem("Text"));
   const [party, setParty] = useState();
   const [proj, setProj] = useState([]);
   const [links, setLinks] = useState([]);
+  let uniq = []
 
   const viewChatbot = () => {
     var database = sessionStorage.getItem("database");
     database = database.split("@");
-    window.location.assign(BASE_URL + `/user/${database[0]}`);
+    window.open(BASE_URL + `/user/${database[0]}`,'_blank')
   };
 
   async function getProjects() {
@@ -66,36 +70,52 @@ export default function Train(props) {
     if (json.result === "No such Database exists") {
       setProj([]);
     } else {
-      console.log(json.result);
       for (let index = 0; index < json.result.length; index++) {
         if (
           json.result[index].project_name === sessionStorage.getItem("project")
         ) {
+          uniq = [...new Set(json.result[index].links)];
           setProj([json.result[index]]);
+          if(json.result[index].endTime !== undefined){
+            console.log(uniq)
+            setText("Training Completed")
+            setVisible('visible')
+            localStorage.setItem("Text","Training Completed")
+          }
+          else{
+            setText("Pending For Training")
+            setVisible('hidden')
+            localStorage.setItem("Text","Pending For Training")
+          }   
         }
       }
     }
   }
 
+  
+
   useEffect(() => {
     getProjects();
-  }, []);
+  },[]);
 
   const deleteModel = (e) => {
     e.preventDefault();
+    setIsOpen(false)
     var database = sessionStorage.getItem("database");
     database = database.split("@");
-
+    setLoading(true)
     axios
       .delete(BASE_URL + `/admin/delete/${database[0]}/${product}`)
       .then((response) => {
         console.log(response);
+        setLoading(false)
         toast.success("Successfully Deleted Model !", {
           position: toast.POSITION_TOP_RIGHT,
         });
       })
       .catch((e) => {
         console.log(e);
+        setLoading(false)
         toast.success("Successfully Deleted Model !", {
           position: toast.POSITION_TOP_RIGHT,
         });
@@ -104,6 +124,7 @@ export default function Train(props) {
 
   const trainModel = (e) => {
     e.preventDefault();
+    setIsOpen(false)
     var database = sessionStorage.getItem("database");
     database = database.split("@");
 
@@ -128,6 +149,7 @@ export default function Train(props) {
       };
       setLoading(true);
       setText("Training Started");
+      localStorage.setItem("Text","Training Started")
       axios
         .post(
           BASE_URL + `/admin/train/${database[0]}`,
@@ -151,7 +173,9 @@ export default function Train(props) {
         .catch((e) => {
           setLoading(false);
           setText("Training Completed");
+          localStorage.setItem("Text","Training Completed")
           setParty(true);
+          setVisible("visible")
           setTimeout(() => {
             setParty(false);
           }, 12000);
@@ -167,9 +191,7 @@ export default function Train(props) {
     setMobileOpen(!mobileOpen);
   };
   // initialize and destroy the PerfectScrollbar plugin
-  React.useEffect(() => {
-    console.log(sessionStorage.getItem("project"));
-  }, []);
+  
 
   return (
     <div>
@@ -224,7 +246,7 @@ export default function Train(props) {
                     </h3>
                   </GridItem>
                 </GridContainer>
-                <GridContainer>
+                <GridContainer visible={visibile}>
                   <GridItem xs={6}>
                     <h3
                       style={{
@@ -271,8 +293,8 @@ export default function Train(props) {
                     "End Time",
                   ]}
                   tableData={proj.map((project) => [
-                    project.project_name,
-                    project.links,
+                    project.project_name ? project.project_name : product,
+                    project.links ? project.links : train,
                     project.startTime,
                     project.endTime,
                   ])}
@@ -288,6 +310,7 @@ export default function Train(props) {
           </GridItem>
         </GridContainer>
         <ButtonM
+        disabled={loading}
           style={{
             color: "white",
             backgroundColor: "green",
@@ -365,6 +388,7 @@ export default function Train(props) {
             </GridItem>
           </GridContainer>
         </Modal>
+        {loading ? <div style={{position:'relative', zIndex:10, bottom:370, left:350}}><ReactLoading type={'spin'} color={'red'} height={'15%'} width={'15%'} /> </div> :  <div></div>}
       </div>
       {party ? <Party /> : <div></div>}
     </div>

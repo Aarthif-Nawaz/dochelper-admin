@@ -14,7 +14,7 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/img_avatar.png";
 
 const styles = {
   cardCategoryWhite: {
@@ -53,6 +53,7 @@ export default function UserProfile() {
   return (
     <div>
       <GridContainer>
+        <img src={avatar} style={{marginLeft:'26em', width:'150px', heigh:'150px'}} />
         <GridItem xs={12}>
           <Card>
             <CardHeader color="info">
@@ -62,7 +63,6 @@ export default function UserProfile() {
               <GridContainer>
                 <GridItem xs={6}>
                   <h3 className={classes.cardTitleBlack}>Email : {sessionStorage.getItem("database")} </h3>
-                  <h3 className={classes.cardTitleBlack}>Password : {sessionStorage.getItem("password")} </h3>
                   <h3 className={classes.cardTitleBlack}>Username : {database[0]} </h3>
                 </GridItem>
               </GridContainer>
