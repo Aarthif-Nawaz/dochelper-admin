@@ -100,6 +100,7 @@ export default function Dashboard(props) {
                   "Trained URLs",
                   "Status",
                   "View",
+                  "Delete"
                 ]}
                 tableData={proj.map((project) => [
                   project.project_name,

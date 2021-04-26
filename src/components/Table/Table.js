@@ -9,10 +9,16 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "components/CustomButtons/Button.js";
 import { useHistory } from "react-router-dom";
+import axios from 'axios'
+import {BASE_URL} from '../../service'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
 
+toast.configure();
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
@@ -23,10 +29,31 @@ export default function CustomTable(props) {
   const { tableHead, tableData, tableHeaderColor, history, database, done } = props;
 
   const train = (proj) => {
+    
     props.history.push({
       pathname: `/admin/train`,
     });
     sessionStorage.setItem("project",proj)
+  }
+
+  const deleteModel = (e,proj) => {
+    e.preventDefault();
+    var database = sessionStorage.getItem("database");
+    database = database.split("@");
+    axios
+      .delete(BASE_URL + `/admin/delete/${database[0]}/${proj}`)
+      .then((response) => {
+        console.log(response);
+        toast.success("Successfully Deleted Model !", {
+          position: toast.POSITION_TOP_RIGHT,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.success("Successfully Deleted Model !", {
+          position: toast.POSITION_TOP_RIGHT,
+        });
+      });
   }
   return (
     <div className={classes.tableResponsive}>
@@ -62,6 +89,9 @@ export default function CustomTable(props) {
                 })}
                 {done ? 
                 <Button onClick={() => train(prop[0])} color="info">{prop[0]}</Button> : <></>}
+                {done ? 
+                <Button size='sm' onClick={(e) => deleteModel(e,prop[0])} color="danger">Delete</Button> : <></>}
+                
               </TableRow>
             );
           })}
